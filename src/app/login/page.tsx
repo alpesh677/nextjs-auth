@@ -18,12 +18,11 @@ export default function LoginPage() {
 		try {
 			setLoading(true);
 			const response = await axios.post("/api/users/login", user);
-			console.log("Login success", response.data);
-			toast.success("Login success");
+			toast.success(response?.data?.message);
 			router.push("/profile");
 		} catch (error: any) {
-			console.log("Login failed", error.message);
-			toast.error(error.message);
+			// console.log("Login failed", error);
+			toast.error("Username or Password is incorrect!!");
 		} finally {
 			setLoading(false);
 		}
@@ -39,34 +38,44 @@ export default function LoginPage() {
 
 	return (
 		<div className="flex flex-col items-center justify-center min-h-screen py-2">
-			<h1>{loading ? "Processing" : "Login"}</h1>
-			<hr />
+			<div className="border border-sky-500 p-8 flex flex-col gap-2 w-full max-w-md">
+				<h1 className="text-3xl mb-3">{loading ?"Loggin in..." :"Login"}</h1>
+				<hr />
 
-			<label htmlFor="email">email</label>
-			<input
-				className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 text-black"
-				id="email"
-				type="text"
-				value={user.email}
-				onChange={(e) => setUser({ ...user, email: e.target.value })}
-				placeholder="email"
-			/>
-			<label htmlFor="password">password</label>
-			<input
-				className="p-2 border border-blue-300 rounded-lg mb-4 focus:outline-none focus:border-blue-600 text-black"
-				id="password"
-				type="password"
-				value={user.password}
-				onChange={(e) => setUser({ ...user, password: e.target.value })}
-				placeholder="password"
-			/>
-			<button
-				onClick={onLogin}
-				className="p-2 border border-blue-300 rounded-lg mb-4 focus:outline-none focus:border-blue-600"
-			>
-				Login here
-			</button>
-			<Link href="/signup">Visit Signup page</Link>
+				<label htmlFor="email">email :</label>
+				<input
+					className="p-2 border border-blue-300 rounded-lg mb-4 focus:outline-none focus:border-blue-600 text-black"
+					id="email"
+					type="text"
+					value={user.email}
+					onChange={(e) =>
+						setUser({ ...user, email: e.target.value })
+					}
+					placeholder="abc@gmail.com"
+				/>
+				<label htmlFor="password">password :</label>
+				<input
+					className="p-2 border border-blue-300 rounded-lg mb-4 focus:outline-none focus:border-blue-600 text-black"
+					id="password"
+					type="password"
+					value={user.password}
+					onChange={(e) =>
+						setUser({ ...user, password: e.target.value })
+					}
+					placeholder="enter your password"
+				/>
+				<button
+					onClick={onLogin}
+					disabled={buttonDisabled}
+					className="p-2 border border-blue-300 rounded-lg mb-4 focus:outline-none focus:border-blue-800 hover:bg-sky-500 hover:text-black hover:font-semibold text-base font-medium cursor-pointer"
+				>
+					Login here
+				</button>
+				<p className="text-center mt-2">
+					Don&apos;t have an account? &nbsp;
+					<Link href="/signup" className="font-bold text-lg hover:text-sky-600 underline">Signup here</Link>
+				</p>
+			</div>
 		</div>
 	);
 }
